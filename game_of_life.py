@@ -44,7 +44,7 @@ def get_cells_random(density):
 
 
 def get_cells_pattern(shape):
-    new_cells = {(c, r): 0 for c in range(columns) for r in range(rows)}
+    new_cells = {(c, r): False for c in range(columns) for r in range(rows)}
     start_column = (columns / 2) - 2
     start_row = (rows / 2) - 2
     if shape == "boat":
@@ -53,14 +53,19 @@ def get_cells_pattern(shape):
         pattern_cells = beacon.split('\n')
     elif shape == "blinker":
         pattern_cells = blinker.split('\n')
-    else:
+    elif shape == "glider":
         pattern_cells = glider.split('\n')
+    else:
+        new_cells = {(c, r): False for c in range(columns) for r in range(rows)}
     column_index = 0
+    print shape, pattern_cells
     for row in pattern_cells:
         row_index = 0
         for column in row:
             if pattern_cells[column_index][row_index] == "1":
                 new_cells[start_column + column_index, start_row + row_index] = True
+            else:
+                new_cells[start_column + column_index, start_row + row_index] = False
             row_index += 1
         column_index += 1
     return new_cells
@@ -68,7 +73,7 @@ def get_cells_pattern(shape):
 
 pygame.init()
 
-columns, rows = 80, 80
+columns, rows = 50, 50
 cells = get_cells_random(0.2)
 
 cell_size = 10
