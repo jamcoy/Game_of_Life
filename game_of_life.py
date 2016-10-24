@@ -47,6 +47,7 @@ def get_cells_pattern(shape):
     new_cells = {(c, r): False for c in range(columns) for r in range(rows)}
     start_column = (columns / 2) - 2
     start_row = (rows / 2) - 2
+    """Think I need to use a reference(?) here"""
     if shape == "boat":
         pattern_cells = boat.split('\n')
     elif shape == "beacon":
