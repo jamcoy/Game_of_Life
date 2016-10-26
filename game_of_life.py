@@ -35,21 +35,21 @@ def evolve():
         live_neighbours = sum(get_neighbours(position))
         if alive:
             if live_neighbours < 2 or live_neighbours > 3:
-                temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+                temp_position = position + ('temp',)  # put result in a temporary copy
                 cells[temp_position] = False
             else:  # copy remaining cells
-                temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+                temp_position = position + ('temp',)  # put result in a temporary copy
                 cells[temp_position] = True
         elif live_neighbours == 3:
-            temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+            temp_position = position + ('temp',)  # put result in a temporary copy
             cells[temp_position] = True
         else:  # copy remaining cells
-            temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+            temp_position = position + ('temp',)  # put result in a temporary copy
             cells[temp_position] = False
     for item, alive in cells.items():  # remove original cells (tuples of length 2)
         if len(item) == 2:
             cells.pop(item)
-    for item, alive in cells.items():  # copy the temp items back without the '-1' marker
+    for item, alive in cells.items():  # copy the temp items back without the 'temp' marker
         new_item = (item[0], item[1])
         cells[new_item] = alive
     for item, alive in cells.items():  # pop the temporary cells (tuples of length 3)
