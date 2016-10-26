@@ -24,8 +24,9 @@ def draw_cells():
 
 
 def get_neighbours((x, y)):
-    positions = [(x - 1, y - 1), (x, y - 1), (x + 1, y - 1), (x + 1, y),
-                 (x + 1, y + 1), (x, y + 1), (x - 1, y + 1), (x - 1, y)]
+    positions = [(x - 1, y - 1), (x, y - 1), (x + 1, y - 1),
+                 (x + 1, y),                 (x + 1, y + 1),
+                 (x, y + 1), (x - 1, y + 1), (x - 1, y)]
     return [cells[r, c] for (r, c) in positions if 0 <= r < rows and 0 <= c < columns]
 
 
@@ -34,9 +35,26 @@ def evolve():
         live_neighbours = sum(get_neighbours(position))
         if alive:
             if live_neighbours < 2 or live_neighbours > 3:
-                cells[position] = False
+                temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+                cells[temp_position] = False
+            else:  # copy remaining cells
+                temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+                cells[temp_position] = True
         elif live_neighbours == 3:
-            cells[position] = True
+            temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+            cells[temp_position] = True
+        else:  # copy remaining cells
+            temp_position = position + (-1,)  # put result in a temporary copy, marked with '-1'
+            cells[temp_position] = False
+    for item, alive in cells.items():  # remove original cells (tuples of length 2)
+        if len(item) == 2:
+            cells.pop(item)
+    for item, alive in cells.items():  # copy the temp items back without the '-1' marker
+        new_item = (item[0], item[1])
+        cells[new_item] = alive
+    for item, alive in cells.items():  # pop the temporary cells (tuples of length 3)
+        if len(item) == 3:
+            cells.pop(item)
 
 
 def get_cells_random(density):
